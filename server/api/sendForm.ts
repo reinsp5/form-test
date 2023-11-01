@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
     });
 
     console.log(`toAdminRes.ok = ${toAdminRes.ok}`);
+    console.log(`toAdminRes.json = ${await toAdminRes.json()}`);
 
     // お客様へ自動返信メール
     if (toAdminRes.ok) {
@@ -63,11 +64,10 @@ export default defineEventHandler(async (event) => {
     console.log("送信失敗。");
     throw createError({
       statusCode: 500,
-      message: await toAdminRes.text(),
+      message: await toAdminRes.json(),
     });
   } catch (error) {
-    console.log("例外発生");
-    console.log(`${error}`);
+    console.log(`StackTrace: ${error}`);
     throw createError({
       statusCode: 500,
       message: `${error}`,
