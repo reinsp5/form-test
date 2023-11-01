@@ -30,6 +30,8 @@ export default defineEventHandler(async (event) => {
     }),
   });
 
+  console.log(toAdminRes);
+
   // お客様へ自動返信メール
   if (toAdminRes.ok) {
     await fetch("https://api.mailchannels.net/tx/v1/send", {
