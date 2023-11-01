@@ -7,34 +7,9 @@ export default defineEventHandler(async (event) => {
   const email = body.email; // フォームデータの中身
   const message = body.message; // フォームデータの中身
 
-  // お問い合わせ内容をサイト運営者に送信
-  const toAdminRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      personalizations: [
-        {
-          to: [{ email: recipientEmail }],
-        },
-      ],
-      from: { email: senderEmail, name: sender },
-      subject: "お問い合わせがありました",
-      content: [
-        {
-          type: "text/plain",
-          value: `【お名前】\n${name}様\n【メールアドレス】\n${email}\n【お問い合わせ内容】\n${message}`,
-        },
-      ],
-    }),
-  });
-
-  console.log(toAdminRes);
-
-  // お客様へ自動返信メール
-  if (toAdminRes.ok) {
-    await fetch("https://api.mailchannels.net/tx/v1/send", {
+  try {
+    // お問い合わせ内容をサイト運営者に送信
+    const toAdminRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -42,21 +17,54 @@ export default defineEventHandler(async (event) => {
       body: JSON.stringify({
         personalizations: [
           {
-            to: [{ email }],
+            to: [{ email: recipientEmail }],
           },
         ],
         from: { email: senderEmail, name: sender },
-        subject: "お問い合わせありがとうございます",
+        subject: "お問い合わせがありました",
         content: [
           {
             type: "text/plain",
-            value: `${name}様\nこの度はお問い合わせいただきありがとうございます。(略)\n【お問い合わせ内容】\n${message}`,
+            value: `【お名前】\n${name}様\n【メールアドレス】\n${email}\n【お問い合わせ内容】\n${message}`,
           },
         ],
       }),
     });
 
-    return "送信に成功しました！";
+    console.log(toAdminRes);
+
+    // お客様へ自動返信メール
+    if (toAdminRes.ok) {
+      await fetch("https://api.mailchannels.net/tx/v1/send", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          personalizations: [
+            {
+              to: [{ email }],
+            },
+          ],
+          from: { email: senderEmail, name: sender },
+          subject: "お問い合わせありがとうございます",
+          content: [
+            {
+              type: "text/plain",
+              value: `${name}様\nこの度はお問い合わせいただきありがとうございます。(略)\n【お問い合わせ内容】\n${message}`,
+            },
+          ],
+        }),
+      });
+
+      return "送信に成功しました！";
+    }
+  } catch (error) {
+    console.log(error);
+    throw createError({
+      statusCode: 500,
+      message: `${error}`,
+    });
   }
 
   throw createError({
