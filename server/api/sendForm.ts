@@ -54,8 +54,11 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    return new Response("送信に成功しました！", { status: 200 });
+    return "送信に成功しました！";
   }
 
-  return new Response("送信に失敗しました。", { status: 500 });
+  throw createError({
+    statusCode: 500,
+    statusMessage: "送信に失敗しました",
+  });
 });
