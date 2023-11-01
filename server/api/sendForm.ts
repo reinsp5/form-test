@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
   const email = formData.get("email"); // フォームデータの中身
   const message = formData.get("message"); // フォームデータの中身
 
+  return JSON.stringify(formData);
   // お問い合わせ内容をサイト運営者に送信
   try {
     const toAdminRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
