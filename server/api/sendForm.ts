@@ -31,10 +31,11 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    console.log(toAdminRes);
+    console.log(toAdminRes.json());
 
     // お客様へ自動返信メール
     if (toAdminRes.ok) {
+      console.log("お客様へ自動返信メール")
       await fetch("https://api.mailchannels.net/tx/v1/send", {
         method: "POST",
         headers: {
@@ -60,15 +61,17 @@ export default defineEventHandler(async (event) => {
       return "送信に成功しました！";
     }
   } catch (error) {
-    console.log(error);
+    console.log("例外発生")
+    console.log(`${error}`);
     throw createError({
       statusCode: 500,
       message: `${error}`,
     });
   }
 
+  console.log("送信失敗。")
   throw createError({
     statusCode: 500,
-    statusMessage: "送信に失敗しました",
+    message: "送信に失敗しました",
   });
 });
