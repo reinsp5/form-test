@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <form action="/api/sendForm">
+  <form action="/api/sendForm" method="POST">
     <label for="name">氏名：</label>
     <input type="text" name="name" />
     <label for="email">メールアドレス：</label>
