@@ -1,4 +1,5 @@
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
   const body = await readBody(event);
   const recipientEmail = "sk.reinsp5@gmail.com"; // 自分のメールアドレス
   const sender = "お試しフォーム太郎"; // 自分の名前や会社名
@@ -18,6 +19,9 @@ export default defineEventHandler(async (event) => {
         personalizations: [
           {
             to: [{ email: recipientEmail }],
+            dkim_domain: "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
+            dkim_selector: "mailchannels",
+            dkim_private_key: config.DKIM_PRIVATE_KEY,
           },
         ],
         from: { email: senderEmail, name: sender },
@@ -46,6 +50,9 @@ export default defineEventHandler(async (event) => {
           personalizations: [
             {
               to: [{ email }],
+              dkim_domain: "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
+              dkim_selector: "mailchannels",
+              dkim_private_key: config.DKIM_PRIVATE_KEY,
             },
           ],
           from: { email: senderEmail, name: sender },
