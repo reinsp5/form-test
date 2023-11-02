@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
         console.log("送信に成功しました！");
         return "送信に成功しました！";
       }else{
-        console.log("送信失敗。");
+        console.log(`送信失敗。（Status = ${toCustRes.status}, Text = ${toCustRes.statusText}）`);
         throw createError({
           statusCode: 500,
         });
