@@ -63,9 +63,9 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    var response = (await toAdminRes.json()) ?? "{}";
+    var response = (await toCustRes.json()) ?? "{}";
     console.log(
-      `status: ${toAdminRes.status} response: ${JSON.stringify(response)}`
+      `status: ${toCustRes.status} response: ${JSON.stringify(response)}`
     );
 
     // メール送信に成功したら、JSONを返す
