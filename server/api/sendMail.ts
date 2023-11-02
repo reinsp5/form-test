@@ -31,6 +31,11 @@ export default defineEventHandler(async (event) => {
     }),
   });
 
+  var response = (await toAdminRes.json()) ?? "{}";
+  console.log(
+    `status: ${toAdminRes.status} response: ${JSON.stringify(response)}`
+  );
+
   // お客様へ自動返信メールを送信する
   if (toAdminRes.ok) {
     const toCustRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
@@ -57,6 +62,11 @@ export default defineEventHandler(async (event) => {
         ],
       }),
     });
+
+    var response = (await toAdminRes.json()) ?? "{}";
+    console.log(
+      `status: ${toAdminRes.status} response: ${JSON.stringify(response)}`
+    );
 
     // メール送信に成功したら、JSONを返す
     if (toCustRes.ok) {
