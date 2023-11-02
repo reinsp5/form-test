@@ -19,9 +19,6 @@ export default defineEventHandler(async (event) => {
         personalizations: [
           {
             to: [{ email: recipientEmail }],
-            dkim_domain: "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
-            dkim_selector: "mailchannels",
-            dkim_private_key: config.DKIM_PRIVATE_KEY,
           },
         ],
         from: { email: senderEmail, name: sender },
@@ -36,12 +33,11 @@ export default defineEventHandler(async (event) => {
     });
 
     console.log(`toAdminRes.ok = ${toAdminRes.ok}`);
-    console.log(`toAdminRes.json = ${await toAdminRes.json()}`);
 
     // お客様へ自動返信メール
     if (toAdminRes.ok) {
       console.log("お客様へ自動返信メール");
-      await fetch("https://api.mailchannels.net/tx/v1/send", {
+      const toCustRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -66,12 +62,19 @@ export default defineEventHandler(async (event) => {
         }),
       });
 
-      return "送信に成功しました！";
+      if (toCustRes.ok) {
+        console.log("送信に成功しました！");
+        return "送信に成功しました！";
+      }else{
+        console.log("送信失敗。");
+        throw createError({
+          statusCode: 500,
+        });
+      }
     }
     console.log("送信失敗。");
     throw createError({
       statusCode: 500,
-      message: await toAdminRes.json(),
     });
   } catch (error) {
     console.log(`StackTrace: ${error}`);
