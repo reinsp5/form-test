@@ -3,8 +3,8 @@ const name = ref("");
 const email = ref("");
 const message = ref("");
 
-const sendForm = () => {
-  const { data, status } = useFetch("/api/sendMail", {
+const sendForm = async () => {
+  const { data, status } = await useFetch("/api/sendMail", {
     method: "POST",
     body: {
       name: name.value,
