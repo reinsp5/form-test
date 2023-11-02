@@ -8,6 +8,40 @@ export default defineEventHandler(async (event) => {
   const email = formData.email; // フォームデータの中身
   const message = formData.message; // フォームデータの中身
 
+  const adminTemplate = `
+  <html>
+    <body>
+      <h1>問い合わせ内容</h1>
+      <hr />
+      <h2>【お名前】</h2>
+        ${name}様
+      <h2>【メールアドレス】</h2>
+        ${email}
+      <h2>【お問い合わせ内容】</h2>
+      <p>
+        ${message}
+      </p>
+    </body>
+  </html>
+  `;
+
+  const custTemplate = `
+  <html>
+    <body>
+      <h1>お問い合わせありがとうございます</h1>
+      <hr />
+      ${name}様
+      この度はお問い合わせいただきありがとうございます。<br>
+      以下の内容を受け付けました。<br>
+      <h2>【お問い合わせ内容】</h2>
+      <p>
+        ${message}
+      </p>
+      お問い合わせ内容を確認中です、しばらくお待ち下さい。
+    </body>
+  </html>
+  `;
+
   // お問い合わせ内容をサイト運営者に送信する
   const toAdminRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
     method: "POST",
@@ -24,8 +58,8 @@ export default defineEventHandler(async (event) => {
       subject: "お問い合わせがありました",
       content: [
         {
-          type: "text/plain",
-          value: `【お名前】\n${name}様\n\n【メールアドレス】\n${email}\n\n【お問い合わせ内容】\n${message}`,
+          type: "text/html",
+          value: adminTemplate,
         },
       ],
     }),
@@ -53,11 +87,11 @@ export default defineEventHandler(async (event) => {
           },
         ],
         from: { email: senderEmail, name: sender },
-        subject: "お問い合わせありがとうございます！",
+        subject: "お問い合わせ受付完了",
         content: [
           {
-            type: "text/plain",
-            value: `${name}様\nこの度はお問い合わせいただきありがとうございます。(略)\n【お問い合わせ内容】\n${message}`,
+            type: "text/html",
+            value: custTemplate,
           },
         ],
       }),
