@@ -28,11 +28,11 @@ const sendForm = () => {
     <h1>お問い合わせ</h1>
     <form @submit.prevent="sendForm">
       <label for="name">お名前</label>
-      <input type="text" id="name" />
+      <input type="text" id="name" v-model="name" />
       <label for="email">メールアドレス</label>
-      <input type="email" id="email" />
+      <input type="email" id="email" v-model="email" />
       <label for="message">お問い合わせ内容</label>
-      <textarea id="message"></textarea>
+      <textarea id="message" v-model="message"></textarea>
       <button type="submit">送信</button>
     </form>
   </div>
