@@ -13,12 +13,14 @@ const sendForm = () => {
     },
   });
 
+  console.log(data.value);
+  console.log(status.value)
   // 送信が成功したら完了ページへ、失敗したらエラーページへ遷移する
-  if (status.value === "success") {
-    navigateTo("/complete");
-  } else {
-    navigateTo("/error");
-  }
+  // if (status.value === "success") {
+  //   navigateTo("/complete");
+  // } else {
+  //   navigateTo("/error");
+  // }
 
 };
 </script>
