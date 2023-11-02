@@ -32,9 +32,6 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    console.log(`toAdminRes.ok = ${toAdminRes.ok}`);
-    console.log(`DKIM_PRIVATE_KEY = ${config.DKIM_PRIVATE_KEY}`);
-
     // お客様へ自動返信メール
     if (toAdminRes.ok) {
       console.log("お客様へ自動返信メール");
@@ -46,10 +43,10 @@ export default defineEventHandler(async (event) => {
         body: JSON.stringify({
           personalizations: [
             {
-              to: [{ email }],
-              dkim_domain: "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
-              dkim_selector: "mailchannels",
-              dkim_private_key: config.DKIM_PRIVATE_KEY,
+              to: [{ email: email, name: name }],
+              "dkim_domain": "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
+              "dkim_selector": "mailchannels",
+              "dkim_private_key": `${config.DKIM_PRIVATE_KEY}`,
             },
           ],
           from: { email: senderEmail, name: sender },
@@ -66,8 +63,10 @@ export default defineEventHandler(async (event) => {
       if (toCustRes.ok) {
         console.log("送信に成功しました！");
         return "送信に成功しました！";
-      }else{
-        console.log(`送信失敗。（Status = ${toCustRes.status}, Text = ${toCustRes.statusText}）`);
+      } else {
+        console.log(
+          `送信失敗。（Status = ${toCustRes.status}, Text = ${toCustRes.statusText}）`
+        );
         throw createError({
           statusCode: 500,
         });
