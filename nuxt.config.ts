@@ -5,6 +5,12 @@ export default defineNuxtConfig({
     preset: "cloudflare-pages"
   },
   runtimeConfig: {
-    DKIM_PRIVATE_KEY: process.env.DKIM_PRIVATE_KEY,
+    dkimPrivateKey: process.env.DKIM_PRIVATE_KEY,
+    ownerMailAddr: process.env.OWNER_MAIL_ADDR || "",
+    senderName: process.env.SENDER_NAME || "",
+    senderMailAddr: process.env.SENDER_MAIL_ADDR || "",
+    public: {
+      domain: process.env.PUBLIC_DOMAIN || "",
+    }
   },
 })

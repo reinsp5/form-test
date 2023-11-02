@@ -1,14 +1,14 @@
 export default defineEventHandler(async (event) => {
+  const formData = await readBody(event);
   const config = useRuntimeConfig();
-  const body = await readBody(event);
-  const recipientEmail = "sk.reinsp5@gmail.com"; // 自分のメールアドレス
-  const sender = "お試しフォーム太郎"; // 自分の名前や会社名
-  const senderEmail = "no-replay@pso2-search.com"; // 送信に使うメールアドレス（ドメインが同じなら適当でも可）
-  const name = body.name; // フォームデータの中身
-  const email = body.email; // フォームデータの中身
-  const message = body.message; // フォームデータの中身
+  const recipientEmail = config.ownerMailAddr; // 自分のメールアドレス
+  const sender = config.senderName; // 自分の名前や会社名
+  const senderEmail = config.senderMailAddr; // 送信に使うメールアドレス（ドメインが同じなら適当でも可）
+  const name = formData.name; // フォームデータの中身
+  const email = formData.email; // フォームデータの中身
+  const message = formData.message; // フォームデータの中身
 
-  // お問い合わせ内容をサイト運営者に送信
+  // お問い合わせ内容をサイト運営者に送信する
   const toAdminRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
     method: "POST",
     headers: {
@@ -25,18 +25,14 @@ export default defineEventHandler(async (event) => {
       content: [
         {
           type: "text/plain",
-          value: `【お名前】\n${name}様\n【メールアドレス】\n${email}\n【お問い合わせ内容】\n${message}`,
+          value: `【お名前】\n${name}様\n\n【メールアドレス】\n${email}\n\n【お問い合わせ内容】\n${message}`,
         },
       ],
     }),
   });
 
-  var response = await toAdminRes.json() ?? "{}";
-  console.log(`status: ${toAdminRes.status}; response: ${response}`);
-
-  // お客様へ自動返信メール
+  // お客様へ自動返信メールを送信する
   if (toAdminRes.ok) {
-    console.log("お客様へ自動返信メール");
     const toCustRes = await fetch("https://api.mailchannels.net/tx/v1/send", {
       method: "POST",
       headers: {
@@ -46,9 +42,9 @@ export default defineEventHandler(async (event) => {
         personalizations: [
           {
             to: [{ email: email, name: name }],
-            dkim_domain: "pso2-search.com", // The value has to be the domain you added DKIM records to and where you're sending your email from
+            dkim_domain: config.public.domain,
             dkim_selector: "mailchannels",
-            dkim_private_key: `${config.DKIM_PRIVATE_KEY}`,
+            dkim_private_key: `${config.dkimPrivateKey}`,
           },
         ],
         from: { email: senderEmail, name: sender },
@@ -62,16 +58,18 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    var response = await toCustRes.json() ?? "{}";
-    console.log(`status: ${toCustRes.status}; response: ${JSON.stringify(response)}`);
-
+    // メール送信に成功したら、JSONを返す
     if (toCustRes.ok) {
-      console.log("送信成功");
-      return "送信に成功しました！";
+      const response = JSON.stringify({
+        message: "メールを送信しました",
+      });
+      return response;
     }
   }
-  console.log("送信失敗。");
+
+  // メール送信に失敗したら、エラーを返す
   throw createError({
     statusCode: 500,
+    statusMessage: "メールの送信に失敗しました",
   });
 });

@@ -3,10 +3,8 @@ const name = ref("");
 const email = ref("");
 const message = ref("");
 
-const sendForm = async () => {
-  const formData = new FormData();
-
-  const { data } = await useFetch("/api/sendForm", {
+const sendForm = () => {
+  const { data, status } = useFetch("/api/sendMail", {
     method: "POST",
     body: {
       name: name.value,
@@ -15,34 +13,35 @@ const sendForm = async () => {
     },
   });
 
-  console.log(data.value);
+  // 送信が成功したら完了ページへ、失敗したらエラーページへ遷移する
+  if (status.value === "success") {
+    navigateTo("/complete");
+  } else {
+    navigateTo("/error");
+  }
+
 };
 </script>
 
 <template>
-  <form @submit.prevent="sendForm">
-    <label for="name">氏名：</label>
-    <input type="text" name="name" v-model="name" />
-    <label for="email">メールアドレス：</label>
-    <input type="text" name="email" v-model="email" />
-    <label for="message"></label>
-    <textarea
-      name="message"
-      id=""
-      cols="30"
-      rows="10"
-      v-model="message"
-    ></textarea>
-    <button type="submit">送信</button>
-  </form>
+  <div>
+    <h1>お問い合わせ</h1>
+    <form @submit.prevent="sendForm">
+      <label for="name">お名前</label>
+      <input type="text" id="name" />
+      <label for="email">メールアドレス</label>
+      <input type="email" id="email" />
+      <label for="message">お問い合わせ内容</label>
+      <textarea id="message"></textarea>
+      <button type="submit">送信</button>
+    </form>
+  </div>
 </template>
 
 <style scoped>
 form {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  height: 100vh;
+  gap: 1rem;
 }
 </style>
