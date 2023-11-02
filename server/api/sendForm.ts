@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
     });
 
     console.log(`toAdminRes.ok = ${toAdminRes.ok}`);
+    console.log(`DKIM_PRIVATE_KEY = ${config.DKIM_PRIVATE_KEY}`);
 
     // お客様へ自動返信メール
     if (toAdminRes.ok) {
