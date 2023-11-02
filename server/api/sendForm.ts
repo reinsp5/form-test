@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
     }),
   });
 
-  var response = await toAdminRes.json();
+  var response = await toAdminRes.json() ?? "{}";
   console.log(`status: ${toAdminRes.status}; response: ${response}`);
 
   // お客様へ自動返信メール
@@ -62,8 +62,8 @@ export default defineEventHandler(async (event) => {
       }),
     });
 
-    var response = await toCustRes.json();
-    console.log(`status: ${toCustRes.status}; response: ${response}`);
+    var response = await toCustRes.json() ?? "{}";
+    console.log(`status: ${toCustRes.status}; response: ${JSON.stringify(response)}`);
 
     if (toCustRes.ok) {
       console.log("送信成功");
