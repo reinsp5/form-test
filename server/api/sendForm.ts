@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
             },
           ],
           from: { email: senderEmail, name: sender },
-          subject: "お問い合わせありがとうございます",
+          subject: "お問い合わせありがとうございます！",
           content: [
             {
               type: "text/plain",
