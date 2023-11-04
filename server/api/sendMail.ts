@@ -15,21 +15,27 @@ export default defineEventHandler(async (event) => {
       <meta charset="utf-8">
       <title>お問い合わせ内容</title>
     </head>
+    <style>
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      p {
+        font-size: 1rem;
+      }
+    </style>
     <body>
       <h1>問い合わせ内容</h1>
-      <hr />
       <h2>【お名前】</h2>
-      <p>
         ${name}様
-      </p>
       <h2>【メールアドレス】</h2>
-      <p>
         ${email}
-      </p>
       <h2>【お問い合わせ内容】</h2>
-      <p>
         ${message}
-      </p>
     </body>
   </html>
   `;
@@ -44,13 +50,15 @@ export default defineEventHandler(async (event) => {
     <body>
       <h1>お問い合わせありがとうございます</h1>
       <p>
-        ${name}様<br>
+        ${name}様
+      </p>
+      <p>
         この度はお問い合わせいただきありがとうございます。<br>
         以下の内容を受け付けました。<br>
       </p>
-      <h2>【お問い合わせ内容】</h2>
       <p>
-        ${message}
+        <h2>【お問い合わせ内容】</h2>
+          ${message}
       </p>
       お問い合わせ内容を確認中です、しばらくお待ち下さい。
     </body>
