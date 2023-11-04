@@ -19,13 +19,16 @@ export default defineEventHandler(async (event) => {
       h1 {
         font-size: 1.5rem;
         font-weight: bold;
+        display: block;
       }
       h2 {
         font-size: 1.2rem;
         font-weight: bold;
+        display: block;
       }
       p {
         font-size: 1rem;
+        display: block;
       }
     </style>
     <body>
@@ -47,6 +50,22 @@ export default defineEventHandler(async (event) => {
       <meta charset="utf-8">
       <title>お問い合わせ内容</title>
     </head>
+    <style>
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: block;
+      }
+      h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: block;
+      }
+      p {
+        font-size: 1rem;
+        display: block;
+      }
+    </style>
     <body>
       <h1>お問い合わせありがとうございます</h1>
       <p>
