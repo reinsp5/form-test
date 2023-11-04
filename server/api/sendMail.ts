@@ -13,75 +13,103 @@ export default defineEventHandler(async (event) => {
   <html lang="ja">
     <head>
       <meta charset="utf-8">
-      <title>お問い合わせ内容</title>
+      <title>問い合わせ内容</title>
     </head>
-    <style>
-      h1 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        display: block;
-      }
-      h2 {
-        font-size: 1.2rem;
-        font-weight: bold;
-        display: block;
-      }
-      p {
-        font-size: 1rem;
-        display: block;
-      }
-    </style>
     <body>
       <h1>問い合わせ内容</h1>
-      <h2>【お名前】</h2>
+      <p>
+        以下の内容で問い合わせがありました。
+      </p>
+      <h2>【お名前】</h2><br>
         ${name}様
-      <h2>【メールアドレス】</h2>
+      <h2>【メールアドレス】</h2><br>
         ${email}
-      <h2>【お問い合わせ内容】</h2>
+      <h2>【お問い合わせ内容】</h2><br>
         ${message}
     </body>
   </html>
   `;
 
   const custTemplate = `
-  <!doctype html>
+  <!DOCTYPE html>
   <html lang="ja">
     <head>
-      <meta charset="utf-8">
+      <meta charset="utf-8" />
       <title>お問い合わせ内容</title>
     </head>
-    <style>
-      h1 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        display: block;
-      }
-      h2 {
-        font-size: 1.2rem;
-        font-weight: bold;
-        display: block;
-      }
-      p {
-        font-size: 1rem;
-        display: block;
-      }
-    </style>
     <body>
       <h1>お問い合わせありがとうございます</h1>
+      <p>${name}様</p>
       <p>
-        ${name}様
+        この度はお問い合わせいただきありがとうございます。<br />
+        以下の内容を受け付けました。<br />
       </p>
-      <p>
-        この度はお問い合わせいただきありがとうございます。<br>
-        以下の内容を受け付けました。<br>
-      </p>
-      <p>
-        <h2>【お問い合わせ内容】</h2>
-          ${message}
-      </p>
-      お問い合わせ内容を確認中です、しばらくお待ち下さい。
+      <h2>【お問い合わせ内容】</h2>
+      <br />
+      <p>${message}</p>
+      お問い合わせ内容を確認中です、しばらくお待ち下さい。<br />
+      このメールは自動送信です。返信はできませんのでご了承ください。
+  
+      <div
+        id="signature"
+        style="
+          font-family: Helvetica, sans-serif;
+          font-size: 12px;
+          max-width: 620px;
+          margin: 10px;
+          color: #000;
+          border-top: 1px dashed #ccc;
+          padding-top: 10px;
+        "
+      >
+        <div style="display: inline-block; vertical-align: top">
+          <div id="email_photo_preview" style="text-align: right"></div>
+        </div>
+        <div
+          style="display: inline-block; vertical-align: top; padding: 0 0 0 5px"
+        >
+          <div>
+            <div
+              id="email_name_preview"
+              style="font-size: 15px; font-weight: bold; padding: 0 0 5px 0"
+            >
+              藤本ゆうき
+            </div>
+            <div id="email_job_company_preview">
+              <span id="email_job_preview">不動産業</span>,
+              <span id="email_company_preview">藤本ゆうき不動産</span>
+            </div>
+          </div>
+          <div style="padding: 0px">
+            <div id="email_phone_preview">Phone: 123-456-7890</div>
+            <div id="email_mobile_preview">Mobile: 090-1234-5678</div>
+          </div>
+          <div id="email_email_website_preview" style="padding: 5px 0 0 0">
+            <span id="email_email_preview"
+              ><a href="mailto:yuuki.fujimooto@fujimoto-reb.com"
+                >yuuki.fujimooto@fujimoto-reb.com</a
+              ></span
+            >
+            |
+            <span id="email_website_preview"
+              ><a href="https://fujimoto-reb.page.dev"
+                >https://fujimoto-reb.page.dev</a
+              ></span
+            >
+          </div>
+          <div style="font-size: 10px; padding: 5px 0 0 0">
+            <span id="email_address_preview"></span>
+          </div>
+          <div style="margin-top: 5px">
+            <span id="email_facebook_preview"></span>
+            <span id="email_linkedin_preview"></span>
+            <span id="email_twitter_preview"></span>
+            <span id="email_instagram_preview"></span>
+          </div>
+        </div>
+      </div>
     </body>
-  </html>
+  </html>  
   `;
 
   // お問い合わせ内容をサイト運営者に送信する
