@@ -9,14 +9,23 @@ export default defineEventHandler(async (event) => {
   const message = formData.message; // フォームデータの中身
 
   const adminTemplate = `
-  <html>
+  <!doctype html>
+  <html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <title>お問い合わせ内容</title>
+    </head>
     <body>
       <h1>問い合わせ内容</h1>
       <hr />
       <h2>【お名前】</h2>
+      <p>
         ${name}様
+      </p>
       <h2>【メールアドレス】</h2>
+      <p>
         ${email}
+      </p>
       <h2>【お問い合わせ内容】</h2>
       <p>
         ${message}
@@ -26,13 +35,19 @@ export default defineEventHandler(async (event) => {
   `;
 
   const custTemplate = `
-  <html>
+  <!doctype html>
+  <html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <title>お問い合わせ内容</title>
+    </head>
     <body>
       <h1>お問い合わせありがとうございます</h1>
-      <hr />
-      ${name}様
-      この度はお問い合わせいただきありがとうございます。<br>
-      以下の内容を受け付けました。<br>
+      <p>
+        ${name}様<br>
+        この度はお問い合わせいただきありがとうございます。<br>
+        以下の内容を受け付けました。<br>
+      </p>
       <h2>【お問い合わせ内容】</h2>
       <p>
         ${message}
